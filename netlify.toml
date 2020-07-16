@@ -4,4 +4,7 @@
   publish   = "out_publish"
 
 [[plugins]]
-  package = "./plugins/next-plugin"
+  package = "@netlify/plugin-sitemap"
+
+# [[plugins]]
+#   package = "./plugins/next-plugin"

@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const execa = require('execa')
 const { promisify } = require('util')
 const { ncp } = require('ncp')
 const { addRules } = require('gitignore-utils')
@@ -31,7 +30,7 @@ module.exports = {
     console.log('run thing', constants)
     const cwd = process.cwd()
 
-    const subprocess = execa(`next-on-netlify`, {
+    const subprocess = utils.run(`next-on-netlify`, {
       cwd: cwd,
       shell: true,
       preferLocal: true,

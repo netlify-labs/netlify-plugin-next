@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "execa": "^4.0.3",
     "gitignore-utils": "^1.0.0",
     "ncp": "^2.0.0",
     "next-on-netlify": "^2.3.0"

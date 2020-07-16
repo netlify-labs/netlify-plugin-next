@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-on-netlify"
     "start": "next start",
     "export": "next export"
   },
@@ -12,5 +13,9 @@
     "next": "9.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@netlify/plugin-sitemap": "^0.3.4",
+    "next-on-netlify": "^2.3.0"
   }
 }

@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
 
@@ -12,9 +13,21 @@ export default function Home() {
 
       <main>
         <Header />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+        <div>
+          <Link href="/about">
+            <a>Dynamic route 1</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/kkljdaklsjdasklj">
+            <a>Dynamic route 2</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/2133131jasjaj">
+            <a>Dynamic route 3</a>
+          </Link>
+        </div>
       </main>
 
       <Footer />

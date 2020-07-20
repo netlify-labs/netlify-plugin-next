@@ -14,7 +14,7 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "@netlify/plugin-next": "0.0.1",
+    "@netlify/plugin-next": "0.0.2",
     "@netlify/plugin-sitemap": "^0.3.4",
     "netlify-plugin-debug-cache": "^1.0.3"
   }

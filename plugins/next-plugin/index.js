@@ -4,10 +4,42 @@ const { promisify } = require('util')
 const { ncp } = require('ncp')
 const { addRules } = require('gitignore-utils')
 const copyFile = promisify(fs.copyFile)
+const readDirP = promisify(fs.readdir)
+const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
+const stat = promisify(fs.stat)
 
 const getCacheDirs = (constants) => [
   path.normalize(`${constants.PUBLISH_DIR}/../.next`),
 ]
+
+async function readAndUpdate(filePath) {
+  const contents = await readFile(filePath, 'utf-8')
+  if (contents.match(/__Re-write header for netlify__/)) {
+    console.log('already written')
+    return contents
+  }
+  const newCode = `
+  // __Re-write header for netlify__
+  console.log('───────────────────────')
+  console.log(new Date())
+  console.log('BEFORE')
+  console.log(response)
+
+  // Force maxage 1
+  Object.keys(response.multiValueHeaders).forEach(key => {
+    if (key === 'cache-control') {
+      response.multiValueHeaders[key] = ['s-maxage=5, stale-while-revalidate=60']
+    }
+  })
+
+  console.log('AFTER')
+  console.log(response)
+  console.log('───────────────────────')
+  // Invoke Callback`
+  const newContents = contents.replace(/\/\/ Invoke callback/, newCode)
+  await writeFile(filePath, newContents)
+}
 
 module.exports = {
   onPreBuild: async ({ constants, inputs, utils }) => {
@@ -27,7 +59,7 @@ module.exports = {
   },
   onBuild: async ({ constants, inputs, utils }) => {
     const cacheDirs = getCacheDirs(constants);
-    console.log('run thing', constants)
+    // console.log('run thing', constants)
     const cwd = process.cwd()
 
     const subprocess = utils.run(`next-on-netlify`, {
@@ -36,30 +68,49 @@ module.exports = {
       preferLocal: true,
       localDir: path.resolve(__dirname)
     })
-    subprocess.stdout.pipe(process.stdout, { end: true })
+    // subprocess.stdout.pipe(process.stdout, { end: true })
     try {
       const { stdout } = await subprocess
     } catch (err) {
       throw new Error(err)
     }
-    console.log('Copy')
+    console.log('───────────────────────')
+    console.log('Copy modules for next.js to functions...')
     const nodeModulesPath = path.resolve(__dirname, 'node_modules')
     const pkg = path.resolve(__dirname, 'package.json')
-    console.log('pkg', pkg)
     const functionsPath = path.resolve(cwd, 'out_functions')
     const functionsModulesPath = path.resolve(cwd, 'out_functions', 'node_modules')
     await copyDir(nodeModulesPath, functionsModulesPath)
     // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
-    console.log('Copy done')
+    console.log('Copying complete.')
+    console.log('───────────────────────')
     if (await utils.cache.save(cacheDirs)) {
-      console.log('Stored the Next cache to speed up future builds.');
+      console.log('Stored the Next cache to speed up future builds.')
+      console.log('───────────────────────')
     }
   },
+  onPostBuild: async () => {
+    const cwd = process.cwd()
+    const functionsPath = path.resolve(cwd, 'out_functions')
+    const files = await readDirP(functionsPath)
+    const filesToEdit = files.filter((f) => {
+      // Filter out api routes and node_modules
+      return !f.match(/^next_api/) && f !== 'node_modules'
+    }).map((f) => {
+      // return full path to function wrapper
+      return path.join(functionsPath, f, `${f}.js`)
+    })
+
+    // Read and update functions
+    await Promise.all(filesToEdit.map((filePath) => {
+      return readAndUpdate(filePath)
+    }))
+  }
 }
 
 function copyDir(source, destination) {
   return new Promise((resolve, reject) => {
-    ncp(source, destination, function (err) {
+    ncp(source, destination, (err) => {
       if (err) reject(err)
       resolve()
     })

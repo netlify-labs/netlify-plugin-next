@@ -14,18 +14,34 @@ export default function Home() {
       <main>
         <Header />
         <div>
-          <Link href="/about">
+          <Link href="/dynamic/about">
             <a>Dynamic route 1</a>
           </Link>
         </div>
         <div>
-          <Link href="/kkljdaklsjdasklj">
+          <Link href="/dynamic/kkljdaklsjdasklj">
             <a>Dynamic route 2</a>
           </Link>
         </div>
         <div>
-          <Link href="/2133131jasjaj">
+          <Link href="/dynamic/2133131jasjaj">
             <a>Dynamic route 3</a>
+          </Link>
+        </div>
+        <hr/>
+        <div>
+          <Link href="/other/about">
+            <a>other route 1</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/other/kkljdaklsjdasklj">
+            <a>other route 2</a>
+          </Link>
+        </div>
+        <div>
+          <Link href="/other/2133131jasjaj">
+            <a>other route 3</a>
           </Link>
         </div>
       </main>

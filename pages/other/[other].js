@@ -9,21 +9,31 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const { dynamic } = params
-
+  const { other } = params
+  const TIME_TO_CACHE_IN_SECONDS = 2
   try {
     return {
+      // revalidate: seconds
+      /* The `revalidate` property is not yet available for general use.
+        To try the experimental implementation, please use `unstable_revalidate` instead.
+        We're excited for you to try this feature—please share all feedback on the RFC:
+        https://nextjs.link/issg
+      */
+      unstable_revalidate: TIME_TO_CACHE_IN_SECONDS,
       props: {
-        hello: dynamic
+        hello: other
       }
     }
   } catch (error) {
     console.error(error)
-    return { props: {} }
+    return {
+      unstable_revalidate: TIME_TO_CACHE_IN_SECONDS,
+      props: {}
+    }
   }
 }
 
-export default function Tweet({ date, hello }) {
+export default function Other({ date, hello }) {
   const { isFallback } = useRouter()
 
   if (!isFallback && !hello) {
@@ -32,6 +42,7 @@ export default function Tweet({ date, hello }) {
 
   return (
     <div className={`page-wrapper`}>
+      <h1>Other Page</h1>
       <main>
         {isFallback ? <Skeleton /> : <ActualComponent hello={hello} />}
 

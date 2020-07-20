@@ -82,17 +82,8 @@ module.exports = {
     const functionsPath = path.resolve(cwd, 'out_functions')
     const functionsModulesPath = path.resolve(cwd, 'out_functions', 'node_modules')
     await copyDir(nodeModulesPath, functionsModulesPath)
-    // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
-    console.log('Copying complete.')
-    console.log('───────────────────────')
-    if (await utils.cache.save(cacheDirs)) {
-      console.log('Stored the Next cache to speed up future builds.')
-      console.log('───────────────────────')
-    }
-  },
-  onPostBuild: async () => {
-    const cwd = process.cwd()
-    const functionsPath = path.resolve(cwd, 'out_functions')
+
+    /* Tweak function contents */
     const files = await readDirP(functionsPath)
     const filesToEdit = files.filter((f) => {
       // Filter out api routes and node_modules
@@ -106,6 +97,14 @@ module.exports = {
     await Promise.all(filesToEdit.map((filePath) => {
       return readAndUpdate(filePath)
     }))
+
+    // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
+    console.log('Copying complete.')
+    console.log('───────────────────────')
+    if (await utils.cache.save(cacheDirs)) {
+      console.log('Stored the Next cache to speed up future builds.')
+      console.log('───────────────────────')
+    }
   }
 }
 

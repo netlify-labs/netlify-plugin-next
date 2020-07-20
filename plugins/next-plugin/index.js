@@ -118,7 +118,7 @@ module.exports = {
 
     const nextPath = path.resolve(cwd, '.next')
     const nextBuildIdPath = path.resolve(nextPath, 'BUILD_ID')
-    const nextBuildId = await readFile(nextBuildId, 'utf-8')
+    const nextBuildId = await readFile(nextBuildIdPath, 'utf-8')
 
     console.log('───────────────────────')
     console.log('Next Build ID=', nextBuildId)

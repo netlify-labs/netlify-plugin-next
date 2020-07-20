@@ -4,6 +4,9 @@
   publish   = "out_publish"
 
 [[plugins]]
+  package = "netlify-plugin-debug-cache"
+
+[[plugins]]
   package = "@netlify/plugin-local-install-core"
 
 [[plugins]]

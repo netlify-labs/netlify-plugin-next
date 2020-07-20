@@ -64,7 +64,7 @@ module.exports = {
     })
     // Read and update functions
     await Promise.all(filesToEdit.map((filePath) => {
-      return readAndUpdate(filePath)
+      return readAndUpdate(filePath, inputs.debug)
     }))
 
     console.log('✅ Modify functions complete')
@@ -102,18 +102,33 @@ function getCacheDirs(constants) {
   ]
 }
 
-async function readAndUpdate(filePath) {
+async function readAndUpdate(filePath, debug) {
   const contents = await readFile(filePath, 'utf-8')
   if (contents.match(/__Re-write header for netlify__/)) {
     console.log('already written')
     return contents
   }
+  let debugStart = ''
+  if (debug) {
+    debugStart = `
+    console.log('───────────────────────')
+    console.log(new Date())
+    console.log('BEFORE response')
+    console.log(response)
+    `
+  }
+  let debugEnd = ''
+  if (debug) {
+    debugEnd = `
+    console.log('AFTER response')
+    console.log(response)
+    console.log('───────────────────────')
+    `
+  }
+
   const newCode = `
   // __Re-write header for netlify__
-  console.log('───────────────────────')
-  console.log(new Date())
-  console.log('BEFORE response')
-  console.log(response)
+  ${debugStart}
 
   // Fix next.js headers for Netlify
   Object.keys(response.multiValueHeaders).forEach((key) => {
@@ -122,22 +137,20 @@ async function readAndUpdate(filePath) {
       let value = Array.isArray(cacheValue) ? cacheValue[0]: cacheValue
       // Fix stale-while-revalidate
       if (value.match(/stale-while-revalidate$/)) {
-        console.log('Replace "stale-while-revalidate" with "stale-while-revalidate=60"')
+        ${(debug) ? 'Replace stale-while-revalidate with stale-while-revalidate=60' : ""}
         value = value.replace(/stale-while-revalidate$/, 'stale-while-revalidate=60')
       }
       // Fix default s-maxage
       if (value.match(/s-maxage=31536000/)) {
-        console.log('Replace "s-maxage=31536000" with "s-maxage=5"')
+        ${(debug) ? "console.log('Replace s-maxage=31536000 with s-maxage=5')" : ""}
         value = value.replace(/s-maxage=31536000/, 's-maxage=5')
       }
-      console.log('new header value', value)
+      ${(debug) ? "console.log('new header value', value)" : ""}
       response.multiValueHeaders[key] = [ value ]
     }
   })
 
-  console.log('AFTER response')
-  console.log(response)
-  console.log('───────────────────────')
+  ${debugEnd}
   // Invoke Callback`
   console.log(`Update ${path.basename(filePath)} code`)
   const newContents = contents.replace(/\/\/ Invoke callback/, newCode)

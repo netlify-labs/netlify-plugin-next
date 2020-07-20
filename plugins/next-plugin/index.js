@@ -23,17 +23,21 @@ async function readAndUpdate(filePath) {
   // __Re-write header for netlify__
   console.log('───────────────────────')
   console.log(new Date())
-  console.log('BEFORE')
+  console.log('BEFORE response')
   console.log(response)
 
-  // Force maxage 1
-  Object.keys(response.multiValueHeaders).forEach(key => {
+  // Force maxage 5
+  Object.keys(response.multiValueHeaders).forEach((key) => {
     if (key === 'cache-control') {
-      response.multiValueHeaders[key] = ['s-maxage=5, stale-while-revalidate=60']
+      const value = response.multiValueHeaders[key]
+      const trueVal = Array.isArray(value) ? value[0]: value
+      if (trueVal.match(/s-maxage=31536000/)) {
+        response.multiValueHeaders[key] = ['s-maxage=5, stale-while-revalidate=60']
+      }
     }
   })
 
-  console.log('AFTER')
+  console.log('AFTER response')
   console.log(response)
   console.log('───────────────────────')
   // Invoke Callback`

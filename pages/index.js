@@ -14,17 +14,17 @@ export default function Home() {
       <main>
         <Header />
         <div>
-          <Link href="/dynamic/about">
+          <Link href="/dynamic/[dynamic]" as="/dynamic/about">
             <a>Dynamic route 1</a>
           </Link>
         </div>
         <div>
-          <Link href="/dynamic/kkljdaklsjdasklj">
+          <Link href="/dynamic/[dynamic]" as="/dynamic/kkljdaklsjdasklj">
             <a>Dynamic route 2</a>
           </Link>
         </div>
         <div>
-          <Link href="/dynamic/2133131jasjaj">
+          <Link href="/dynamic/[dynamic]" as="/dynamic/2133131jasjaj">
             <a>Dynamic route 3</a>
           </Link>
         </div>

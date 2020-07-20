@@ -53,5 +53,5 @@ Config should ultimately look something like:
   publish   = "out_publish"
 
 [[plugins]]
-  package = "./plugins/next-plugin"
+  package = "@netlify/plugin-next"
 ```

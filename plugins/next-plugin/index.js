@@ -95,7 +95,10 @@ module.exports = {
     const functionsPath = path.resolve(cwd, 'out_functions')
     const functionsModulesPath = path.resolve(cwd, 'out_functions', 'node_modules')
     await copyDir(nodeModulesPath, functionsModulesPath)
+    console.log('Copying complete.')
+    console.log('───────────────────────')
 
+    console.log('Modify functions')
     /* Tweak function contents */
     const files = await readDirP(functionsPath)
     const filesToEdit = files.filter((f) => {
@@ -111,9 +114,18 @@ module.exports = {
       return readAndUpdate(filePath)
     }))
 
-    // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
-    console.log('Copying complete.')
     console.log('───────────────────────')
+
+    const nextPath = path.resolve(cwd, '.next')
+    const nextBuildIdPath = path.resolve(nextPath, 'BUILD_ID')
+    const nextBuildId = await readFile(nextBuildId, 'utf-8')
+
+    console.log('───────────────────────')
+    console.log('Next Build ID=', nextBuildId)
+    console.log('───────────────────────')
+
+    // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
+
     if (await utils.cache.save(cacheDirs)) {
       console.log('Stored the Next cache to speed up future builds.')
       console.log('───────────────────────')

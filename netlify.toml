@@ -10,4 +10,6 @@
   package = "@netlify/plugin-sitemap"
 
 [[plugins]]
-  package = "./plugins/next-plugin"
+  package = "./next-plugin"
+  [plugins.inputs]
+    debug = true

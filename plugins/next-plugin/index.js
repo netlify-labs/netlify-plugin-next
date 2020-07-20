@@ -41,7 +41,8 @@ async function readAndUpdate(filePath) {
         console.log('Replace "s-maxage=31536000" with "s-maxage=5"')
         value = value.replace(/s-maxage=31536000/, 's-maxage=5')
       }
-      response.multiValueHeaders[key] = value
+      console.log('new header value', value)
+      response.multiValueHeaders[key] = [ value ]
     }
   })
 

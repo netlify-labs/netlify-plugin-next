@@ -137,7 +137,7 @@ async function readAndUpdate(filePath, debug) {
       let value = Array.isArray(cacheValue) ? cacheValue[0]: cacheValue
       // Fix stale-while-revalidate
       if (value.match(/stale-while-revalidate$/)) {
-        ${(debug) ? 'Replace stale-while-revalidate with stale-while-revalidate=60' : ""}
+        ${(debug) ? 'console.log("Replace stale-while-revalidate with stale-while-revalidate=60")' : ""}
         value = value.replace(/stale-while-revalidate$/, 'stale-while-revalidate=60')
       }
       // Fix default s-maxage

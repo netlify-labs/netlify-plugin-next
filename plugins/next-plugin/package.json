@@ -1,7 +1,7 @@
 {
-  "name": "next-plugin",
+  "name": "@netlify/next-plugin",
   "version": "1.0.0",
-  "description": "",
+  "description": "Next.js plugin for Netlify builds",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,7 @@
   "dependencies": {
     "gitignore-utils": "^1.0.0",
     "ncp": "^2.0.0",
-    "next-on-netlify": "^2.3.0"
+    "next-on-netlify": "^2.3.0",
+    "whats-in-the-cache": "^1.0.0"
   }
 }

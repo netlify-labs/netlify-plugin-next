@@ -3,6 +3,7 @@ const path = require('path')
 const { promisify } = require('util')
 const { ncp } = require('ncp')
 const { addRules } = require('gitignore-utils')
+const getCacheInfo = require('whats-in-the-cache')
 const copyFile = promisify(fs.copyFile)
 const readDirP = promisify(fs.readdir)
 const readFile = promisify(fs.readFile)
@@ -73,7 +74,7 @@ module.exports = {
   },
   onBuild: async ({ constants, inputs, utils }) => {
     const cacheDirs = getCacheDirs(constants);
-    // console.log('run thing', constants)
+    console.log('run thing', constants)
     const cwd = process.cwd()
 
     const subprocess = utils.run(`next-on-netlify`, {
@@ -123,6 +124,14 @@ module.exports = {
     console.log('───────────────────────')
     console.log('Next Build ID=', nextBuildId)
     console.log('───────────────────────')
+
+    // Output a manifest for cache defuallitng
+    await getCacheInfo({
+      cacheDirectory: constants.CACHE_DIR,
+      outputPath: path.join(constants.PUBLISH_DIR, 'debug-next-cache.json') ,
+    }).then(() => {
+      console.log('Cache manifest saved')
+    })
 
     // await copyFile(pkg, path.resolve(functionsPath, 'package.json'))
 

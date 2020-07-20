@@ -1,1 +1,6 @@
 name: netlify-plugin-next
+
+inputs:
+  - name: debug
+    description: Debug the next.js cache
+    default: false

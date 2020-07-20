@@ -1,14 +1,18 @@
 {
-  "name": "@netlify/next-plugin",
-  "version": "1.0.0",
+  "name": "@netlify/plugin-next",
+  "version": "0.0.1",
   "description": "Next.js plugin for Netlify builds",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "David Wells",
+  "repository": "https://github.com/netlify-labs/netlify-plugin-next",
+  "bugs": {
+    "url": "https://github.com/netlify-labs/netlify-plugin-next/issues"
+  },
+  "license": "MIT",
   "dependencies": {
     "gitignore-utils": "^1.0.0",
     "ncp": "^2.0.0",

@@ -30,17 +30,17 @@ export default function Home() {
         </div>
         <hr/>
         <div>
-          <Link href="/other/about">
+          <Link href="/other/[other]" as="/other/about">
             <a>other route 1</a>
           </Link>
         </div>
         <div>
-          <Link href="/other/kkljdaklsjdasklj">
+          <Link href="/other/[other]" as="/other/kkljdaklsjdasklj">
             <a>other route 2</a>
           </Link>
         </div>
         <div>
-          <Link href="/other/2133131jasjaj">
+          <Link href="/other/[other]" as="/other/2133131jasjaj">
             <a>other route 3</a>
           </Link>
         </div>

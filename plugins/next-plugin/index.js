@@ -37,6 +37,7 @@ async function readAndUpdate(filePath) {
   console.log(response)
   console.log('───────────────────────')
   // Invoke Callback`
+  console.log(`Update ${path.basename(filePath)} code`)
   const newContents = contents.replace(/\/\/ Invoke callback/, newCode)
   await writeFile(filePath, newContents)
 }
@@ -100,7 +101,7 @@ module.exports = {
       // return full path to function wrapper
       return path.join(functionsPath, f, `${f}.js`)
     })
-
+    console.log('update', filesToEdit)
     // Read and update functions
     await Promise.all(filesToEdit.map((filePath) => {
       return readAndUpdate(filePath)

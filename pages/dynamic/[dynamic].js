@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import Error from 'next/error'
 import Skeleton from '@components/Skeleton'
@@ -32,6 +33,9 @@ export default function Tweet({ date, hello }) {
 
   return (
     <div className={`page-wrapper`}>
+      <Head>
+        <title>Title - {hello}</title>
+      </Head>
       <h1>It worked</h1>
       <main>
         {isFallback ? <Skeleton /> : <ActualComponent hello={hello} />}

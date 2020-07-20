@@ -4,12 +4,9 @@
   publish   = "out_publish"
 
 [[plugins]]
-  package = "@netlify/plugin-local-install-core"
-
-[[plugins]]
   package = "@netlify/plugin-sitemap"
 
 [[plugins]]
-  package = "./next-plugin"
+  package = "@netlify/plugin-next"
   [plugins.inputs]
     debug = true

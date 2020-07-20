@@ -26,14 +26,22 @@ async function readAndUpdate(filePath) {
   console.log('BEFORE response')
   console.log(response)
 
-  // Force maxage 5
+  // Fix next.js headers for Netlify
   Object.keys(response.multiValueHeaders).forEach((key) => {
     if (key === 'cache-control') {
-      const value = response.multiValueHeaders[key]
-      const trueVal = Array.isArray(value) ? value[0]: value
-      if (trueVal.match(/s-maxage=31536000/)) {
-        response.multiValueHeaders[key] = ['s-maxage=5, stale-while-revalidate=60']
+      const cacheValue = response.multiValueHeaders[key]
+      let value = Array.isArray(cacheValue) ? cacheValue[0]: cacheValue
+      // Fix stale-while-revalidate
+      if (value.match(/stale-while-revalidate$/))) {
+        console.log('Replace "stale-while-revalidate" with "stale-while-revalidate=60"')
+        value = value.replace(/stale-while-revalidate$/, 'stale-while-revalidate=60')
       }
+      // Fix default s-maxage
+      if (value.match(/s-maxage=31536000/)) {
+        console.log('Replace "s-maxage=31536000" with "s-maxage=5"')
+        value = value.replace(/s-maxage=31536000/, 's-maxage=5')
+      }
+      response.multiValueHeaders[key] = value
     }
   })
 

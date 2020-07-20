@@ -39,7 +39,9 @@ export default function Tweet({ date, hello }) {
       <h1>It worked</h1>
       <main>
         {isFallback ? <Skeleton /> : <ActualComponent hello={hello} />}
-
+        <Link href="/">
+          <a>Back home</a>
+        </Link>
         <footer>
           <p>
             {isFallback

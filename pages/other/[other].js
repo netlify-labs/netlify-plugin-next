@@ -49,7 +49,9 @@ export default function Other({ date, hello }) {
       <h1>Other Page</h1>
       <main>
         {isFallback ? <Skeleton /> : <ActualComponent hello={hello} />}
-
+        <Link href="/">
+          <a>Back home</a>
+        </Link>
         <footer>
           <p>
             {isFallback

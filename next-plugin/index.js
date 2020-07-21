@@ -27,6 +27,7 @@ module.exports = {
     }
   },
   onBuild: async ({ constants, inputs, utils }) => {
+    const { IS_LOCAL } = constants
     const cacheDirs = getCacheDirs(constants)
     const cwd = process.cwd()
 
@@ -44,8 +45,9 @@ module.exports = {
     }
     console.log('──────────────────────────────────────────────')
     console.log('Copy node_modules for next.js to functions...')
-    const nodeModulesPath = path.resolve(__dirname, 'node_modules')
-    const pkg = path.resolve(__dirname, 'package.json')
+
+    const dir = (IS_LOCAL) ? path.resolve(__dirname, '../..') : __dirname
+    const nodeModulesPath = (path.basename(dir) === 'node_modules') ? dir : path.resolve(dir, 'node_modules')
     const functionsPath = path.resolve(cwd, 'out_functions')
     const functionsModulesPath = path.resolve(cwd, 'out_functions', 'node_modules')
     await copyDir(nodeModulesPath, functionsModulesPath)

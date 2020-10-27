@@ -1,3 +1,7 @@
+## *This project has been deprecated in favor of [@netlify/plugin-nextjs](https://github.com/netlify/netlify-plugin-nextjs#readme)*
+
+---
+
 # Next + Netlify Build Plugin
 
 Enable Next.js dynamic routes on Netlify.
